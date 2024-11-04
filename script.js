@@ -21,7 +21,7 @@ async function fetchLeaderboardData() {
             score: row[2], // 'score' column (C)
             secret: row[3], // 'secret' column (D)
             gitRepo: row[4], // 'git repo' column (E)
-            id: row[5]  // 'id' column (F)
+            download: row[5]  // 'id' column (F)
         }));
 
         // Now update the leaderboard with the real data
@@ -45,7 +45,9 @@ function updateLeaderboard(entries) {
             <td>${entry.score}</td>
             <td>${entry.secret}</td>
             <td><a href="${entry.gitRepo}" target="_blank">${entry.gitRepo}</a></td>
-            <td>${entry.id}</td>
+            <td>
+                <a href="${entry.download}" download target="_blank">Download</a>
+            </td>
         `;
         leaderboardBody.appendChild(row);
     });
