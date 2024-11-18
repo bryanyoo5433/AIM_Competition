@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxwxWEJELoQkINK77XFd3nXyoxzCpPuFsRrcERaI8p433h--68WbCQPJMFyekbCaHx1ig/exec"; 
+const API_URL = "https://script.google.com/macros/s/AKfycbwuaF0cEmmuYw1_nJobHlCbEQoEQJwbC9_wES_Az5UH91-U4_IdFEOnnc-rRFY6QrtiNw/exec"; 
 
 function formatTimestamp(isoString) {
     const date = new Date(isoString);
@@ -27,10 +27,12 @@ async function fetchLeaderboardData() {
         const response = await fetch(API_URL);
         const data = await response.json();  // Parse the JSON response
         console.log("Fetched Data: ", data.values)
+
         const leaderboardEntries = data.values.map(row => ({
-            timestamp: formatTimestamp(row[0]), 
-            teamid: row[1], 
-            score: parseFloat(row[2])
+            timestamp: formatTimestamp(row[0]), // Column A (Timestamp)
+            teamName: row[1],                  // Column B (Team Name)
+            teamMembers: row[2],               // Column C (Team Members)
+            score: parseFloat(row[3])          // Column D (Score)
         }));
         
         // Sort entries by score in descending order
@@ -53,9 +55,9 @@ function updateLeaderboard(entries) {
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${entry.timestamp}</td>
-            <td>${entry.teamid}</td>
+            <td>${entry.teamName}</td>
+            <td>${entry.teamMembers}</td>
             <td>${entry.score}</td>
-            
         `;
         leaderboardBody.appendChild(row);
     });
