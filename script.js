@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbzfSorh2MlYMvXO06mQsvG_O3O7s7heMufcRPtFvMkwdewD13Xnr92KTjibxZGLn5BlAg/exec"; 
+const API_URL = "https://script.google.com/macros/s/AKfycbxwxWEJELoQkINK77XFd3nXyoxzCpPuFsRrcERaI8p433h--68WbCQPJMFyekbCaHx1ig/exec"; 
 
 function formatTimestamp(isoString) {
     const date = new Date(isoString);
@@ -29,9 +29,12 @@ async function fetchLeaderboardData() {
         console.log("Fetched Data: ", data.values)
         const leaderboardEntries = data.values.map(row => ({
             timestamp: formatTimestamp(row[0]), 
-            email: row[1], 
-            teamname: row[2], 
+            teamid: row[1], 
+            score: parseFloat(row[2])
         }));
+        
+        // Sort entries by score in descending order
+        leaderboardEntries.sort((a, b) => b.score - a.score);
 
         // Now update the leaderboard with the real data
         updateLeaderboard(leaderboardEntries);  
@@ -50,8 +53,9 @@ function updateLeaderboard(entries) {
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${entry.timestamp}</td>
-            <td>${entry.email}</td>
-            <td>${entry.teamname}</td>
+            <td>${entry.teamid}</td>
+            <td>${entry.score}</td>
+            
         `;
         leaderboardBody.appendChild(row);
     });
